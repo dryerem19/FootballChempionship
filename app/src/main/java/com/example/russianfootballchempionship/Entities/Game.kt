@@ -3,6 +3,7 @@ package com.example.russianfootballchempionship.Entities
 import androidx.room.*
 
 @Entity(tableName = "Game")
+
 data class Game(
                 val HomeTeam: String,
                 val GuestTeam: String,

@@ -32,6 +32,8 @@ class EditActivity : AppCompatActivity() {
         val homeTeamGoalsField: EditText = findViewById(R.id.homeTeamGoalsField)
         val guestTeamGoalsField: EditText = findViewById(R.id.guestTeamGoalsField)
 
+        val isEdit: Boolean = intent.getStringExtra("is_edit").toBoolean()
+
         lifecycleScope.launch(Dispatchers.IO) {
             teams = dbContext.teamDao().getAll()
             runOnUiThread {
@@ -42,6 +44,21 @@ class EditActivity : AppCompatActivity() {
             }
         }
 
+        if (isEdit) {
+            val homeTeamString: String = intent.getStringExtra("team_home").toString()
+            val guestTeamString: String = intent.getStringExtra("guest_team").toString()
+            val homeTeamGoals: String = intent.getStringExtra("home_goals").toString()
+            val guestTeamGoals: String = intent.getStringExtra("guest_goals").toString()
+
+            val selectedTeamHome = teams.find { x -> x.Name == homeTeamString }
+            val selectedTeamGuest = teams.find { x -> x.Name == guestTeamString }
+            homeTeamSpinner.setSelection(teams.indexOf(selectedTeamHome))
+            guestTeamSpinner.setSelection(teams.indexOf(selectedTeamGuest))
+
+            homeTeamGoalsField.setText(homeTeamGoals)
+            guestTeamGoalsField.setText(guestTeamGoals)
+        }
+
         val exitBtn: Button = findViewById(R.id.cancelBtn)
         exitBtn.setOnClickListener {
             finish()
@@ -49,6 +66,13 @@ class EditActivity : AppCompatActivity() {
 
         val saveBtn: Button = findViewById(R.id.saveBtn)
         saveBtn.setOnClickListener{
+
+            if (isEdit) {
+                val homeTeam = teams[homeTeamSpinner.selectedItemId.toInt()]
+                val guestTeam = teams[guestTeamSpinner.selectedItemId.toInt()]
+
+            }
+
             val homeTeam = homeTeamSpinner.selectedItem.toString()
             val guestTeam = guestTeamSpinner.selectedItem.toString()
 

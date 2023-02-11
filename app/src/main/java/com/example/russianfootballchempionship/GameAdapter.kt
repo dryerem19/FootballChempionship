@@ -1,14 +1,21 @@
 package com.example.russianfootballchempionship
 
-import android.text.Layout
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.OnClickListener
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.russianfootballchempionship.Entities.Game
+import kotlinx.coroutines.CoroutineScope
 
-class GameAdapter(private val gameList: List<Game>) :
+interface OnGameClickListener {
+    fun onGameItemClicked(position: Int)
+}
+
+class GameAdapter(private val gameList: List<Game>,
+                  private val onGameClickListener: OnGameClickListener
+) :
     RecyclerView.Adapter<GameAdapter.GameViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GameViewHolder {
@@ -23,6 +30,10 @@ class GameAdapter(private val gameList: List<Game>) :
         holder.guestTeam.text = currentItem.GuestTeam
         holder.homeGoals.text = currentItem.HomeGoals.toString()
         holder.guestGoals.text = currentItem.GuestGoals.toString()
+
+        holder.itemView.setOnClickListener {
+            onGameClickListener.onGameItemClicked(position)
+        }
     }
 
     override fun getItemCount(): Int {

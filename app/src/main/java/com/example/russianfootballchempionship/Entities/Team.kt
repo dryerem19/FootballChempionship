@@ -25,9 +25,6 @@ interface TeamDao {
     @Query("SELECT * FROM Team")
     fun getAll() : List<Team>
 
-    @Query("SELECT * FROM Team WHERE Name =:name")
-    fun find(name: String) : Team?
-
     @Insert
     fun insert(team: Team)
 

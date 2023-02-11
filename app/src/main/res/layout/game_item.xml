@@ -3,7 +3,11 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    android:layout_margin="10dp"
+    android:minHeight="50dp"
+    android:gravity="center"
+    android:background="@color/purple_200">
 
     <TextView
         android:id="@+id/teamHome"
@@ -11,12 +15,14 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:text="Ангола"
+        android:textColor="@color/black"
         android:gravity="center_horizontal"/>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
+        android:textColor="@color/black"
         android:text="-"
         android:gravity="center_horizontal"/>
 
@@ -24,6 +30,7 @@
         android:id="@+id/teamGuest"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textColor="@color/black"
         android:layout_weight="1"
         android:text="Спартак"
         android:gravity="center_horizontal"/>
@@ -31,6 +38,7 @@
     <TextView
         android:id="@+id/goalsHome"
         android:layout_width="match_parent"
+        android:textColor="@color/black"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:text="2"
@@ -39,6 +47,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textColor="@color/black"
         android:layout_weight="1"
         android:text=":"
         android:gravity="center_horizontal"/>
@@ -48,6 +57,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
+        android:textColor="@color/black"
         android:text="3"
         android:gravity="center_horizontal"/>
 

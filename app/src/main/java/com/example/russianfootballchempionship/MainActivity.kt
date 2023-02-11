@@ -17,10 +17,11 @@ import com.example.russianfootballchempionship.databinding.ActivityMainBinding
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), OnGameClickListener {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var dbContext: DbContext
+    private lateinit var gameList: List<Game>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,16 +32,22 @@ class MainActivity : AppCompatActivity() {
         binding.gameRecyclerView.layoutManager = LinearLayoutManager(this)
         binding.gameRecyclerView.setHasFixedSize(true)
 
-//        lifecycleScope.launch(Dispatchers.IO) {
-//            dbContext.clearAllTables()
-//            dbContext.gameDao().insert(Game("a", "b", 1, 2))
-//        }
-
         updateGameList()
         binding.addGameBtn.setOnClickListener {
             val i = Intent(this, EditActivity::class.java)
+            i.putExtra("is_edit", false)
             startActivity(i)
         }
+    }
+
+    override fun onGameItemClicked(position: Int) {
+        val i = Intent(this, EditActivity::class.java)
+        i.putExtra("is_edit", true)
+        i.putExtra("team_home", gameList[position].HomeTeam)
+        i.putExtra("guest_team", gameList[position].GuestTeam)
+        i.putExtra("home_goals", gameList[position].HomeGoals)
+        i.putExtra("guest_goals", gameList[position].GuestGoals)
+        startActivity(i)
     }
 
     override fun onRestart() {
@@ -66,7 +73,8 @@ class MainActivity : AppCompatActivity() {
                     .setPositiveButton(R.string.add) { _, _ ->
                         lifecycleScope.launch(Dispatchers.IO) {
                             val name = inputTeam.text.toString().trim()
-                            if (dbContext.teamDao().find(name) == null) {
+                            val find = dbContext.teamDao().getAll().find { x -> x.Name == name }
+                            if (find == null) {
                                 dbContext.teamDao().insert(Team(name))
                             } else {
                                 runOnUiThread {
@@ -84,6 +92,14 @@ class MainActivity : AppCompatActivity() {
                 val dialog = dialogBuilder.create()
                 dialog.show()
             }
+            R.id.deleteAll -> {
+                lifecycleScope.launch(Dispatchers.IO) {
+                    dbContext.clearAllTables()
+                    runOnUiThread {
+                        updateGameList()
+                    }
+                }
+            }
             R.id.exit -> {
                 moveTaskToBack(true)
                 finishAffinity()
@@ -95,9 +111,9 @@ class MainActivity : AppCompatActivity() {
     private fun updateGameList() {
         val ref = this
         lifecycleScope.launch(Dispatchers.IO) {
-            val gameList = dbContext.gameDao().getAll()
-            ref.runOnUiThread {
-                binding.gameRecyclerView.adapter = GameAdapter(gameList)
+            gameList = dbContext.gameDao().getAll()
+            runOnUiThread {
+                binding.gameRecyclerView.adapter = GameAdapter(gameList, ref)
             }
         }
     }
