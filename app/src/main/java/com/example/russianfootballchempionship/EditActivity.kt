@@ -32,6 +32,10 @@ class EditActivity : AppCompatActivity() {
         val homeTeamGoalsField: EditText = findViewById(R.id.homeTeamGoalsField)
         val guestTeamGoalsField: EditText = findViewById(R.id.guestTeamGoalsField)
 
+//        val game: Game = intent.getSerializableExtra("game") as Game
+//        if (game != null) {
+//            val i = 10
+//        }
         val isEdit: Boolean = intent.getStringExtra("is_edit").toBoolean()
 
         lifecycleScope.launch(Dispatchers.IO) {

@@ -35,18 +35,14 @@ class MainActivity : AppCompatActivity(), OnGameClickListener {
         updateGameList()
         binding.addGameBtn.setOnClickListener {
             val i = Intent(this, EditActivity::class.java)
-            i.putExtra("is_edit", false)
+//            i.putExtra("game", null)
             startActivity(i)
         }
     }
 
     override fun onGameItemClicked(position: Int) {
         val i = Intent(this, EditActivity::class.java)
-        i.putExtra("is_edit", true)
-        i.putExtra("team_home", gameList[position].HomeTeam)
-        i.putExtra("guest_team", gameList[position].GuestTeam)
-        i.putExtra("home_goals", gameList[position].HomeGoals)
-        i.putExtra("guest_goals", gameList[position].GuestGoals)
+        //i.putExtra("game", gameList[position])
         startActivity(i)
     }
 
