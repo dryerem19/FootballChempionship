@@ -35,14 +35,17 @@ class MainActivity : AppCompatActivity(), OnGameClickListener {
         updateGameList()
         binding.addGameBtn.setOnClickListener {
             val i = Intent(this, EditActivity::class.java)
-//            i.putExtra("game", null)
             startActivity(i)
         }
     }
 
     override fun onGameItemClicked(position: Int) {
         val i = Intent(this, EditActivity::class.java)
-        //i.putExtra("game", gameList[position])
+
+        val bundle = Bundle()
+        bundle.putSerializable("game", gameList[position])
+
+        i.putExtras(bundle)
         startActivity(i)
     }
 
